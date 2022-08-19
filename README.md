@@ -909,6 +909,55 @@ This is a very (very!) basic guide on how to enable and configure kdump and sos 
     Swap:         1,0Gi       121Mi       902Mi
     Total:        4,6Gi       516Mi       3,3Gi
     
+    [root@demo ~]# top
+    top - 17:55:31 up 2 days, 25 min,  2 users,  load average: 0,01, 0,02, 0,03
+    Tasks: 186 total,   2 running, 184 sleeping,   0 stopped,   0 zombie
+    %Cpu0  :  0,3 us,  0,0 sy,  0,0 ni, 99,7 id,  0,0 wa,  0,0 hi,  0,0 si,  0,0 st
+    %Cpu1  :  0,0 us,  0,3 sy,  0,0 ni, 96,0 id,  3,3 wa,  0,3 hi,  0,0 si,  0,0 st
+    MiB Mem :   3731,8 total,   1419,7 free,    529,1 used,   1783,0 buff/cache
+    MiB Swap:   1024,0 total,    906,1 free,    117,9 used.   2887,7 avail Mem 
+    
+        PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                       
+     128858 root      20   0       0      0      0 R   0,3   0,0   0:00.02 kworker/1:3-xfs-buf/dm-0                                                      
+     128859 root      20   0  275232   4704   4048 R   0,3   0,1   0:00.03 top                                                                           
+          1 root      20   0  243712  13704   7496 S   0,0   0,4   0:24.68 systemd                                                                       
+          2 root      20   0       0      0      0 S   0,0   0,0   0:00.15 kthreadd                                                                      
+          3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp                       
+    ...skipping...
+    
+    [root@demo ~]# systemd-cgtop
+    Control Group                                                                                                 Tasks   %CPU   Memory  Input/s Output/s
+    /                                                                                                               227    2.0     2.2G        -        -
+    /user.slice                                                                                                      12    1.7     1.5G        -        -
+    /system.slice                                                                                                    80    0.3   422.9M        -        -
+    /system.slice/tuned.service                                                                                       5    0.2    15.7M        -        -
+    /system.slice/redis.service                                                                                       4    0.1   146.0M        -        -
+    /system.slice/rhsm.service                                                                                        2    0.0    24.5M        -        -
+    /system.slice/pmproxy.service                                                                                     1    0.0    30.8M        -        -
+    /system.slice/multipathd.service                                                                                  7    0.0    11.5M        -        -
+    /system.slice/NetworkManager.service                                                                              3    0.0     4.6M        -        -
+    /system.slice/rsyslog.service                                                                                     3    0.0     2.9M        -        -
+    /system.slice/sssd.service                                                                                        3    0.0    11.7M        -        -
+    /init.scope                                                                                                       1      -    26.4M        -        -
+    /system.slice/auditd.service                                                                                      4      -     1.9M        -        -
+    /system.slice/boot.mount                                                                                          -      -     4.0K        -        -
+    /system.slice/cockpit-wsinstance-http.socket                                                                      -      -     4.0K        -        -
+    /system.slice/cockpit-wsinstance-https-factory.socket                                                             -      -     4.0K        -        -
+    /system.slice/cockpit.service                                                                                     7      -     2.5M        -        -
+    /system.slice/cockpit.socket                                                                                      -      -    60.0K        -        -
+    /system.slice/crond.service                                                                                       1      -     1.1M        -        -
+    /system.slice/dbus.service                                                                                        2      -     1.9M        -        -
+    /system.slice/dev-hugepages.mount                                                                                 -      -     4.0K        -        -
+    /system.slice/dev-mapper-VG_01\x2dswap.swap                                                                       -      -    56.0K        -        -
+    /system.slice/dev-mqueue.mount                                                                                    -      -     4.0K        -        -
+    /system.slice/firewalld.service                                                                                   2      -    23.1M        -        -
+    /system.slice/gssproxy.service                                                                                    6      -  1008.0K        -        -
+    /system.slice/irqbalance.service                                                                                  2      -   920.0K        -        -
+    /system.slice/iscsid.service                                                                                      1      -    13.4M        -        -
+    /system.slice/ksmtuned.service                                                                                    2      -     6.3M        -        -
+    /system.slice/osbuild-composer.socket                                                                             -      -     4.0K        -        -
+    /system.slice/pmcd.service                                                                                        6      -    12.9M        -        -
+
     [root@demo ~]# iostat -cdyx 1 1
     Linux 4.18.0-372.19.1.el8_6.x86_64 (demo.example.local) 	19/08/2022 	_x86_64_	(2 CPU)
     
