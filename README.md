@@ -94,6 +94,24 @@ This is a very (very!) basic guide on how to enable and configure kdump and sos 
     
     [root@demo ~]# ls /var/crash/127.0.0.1-2022-08-16-16\:32\:51/
     kexec-dmesg.log  vmcore  vmcore-dmesg.txt
+    
+### Check reboot triggered by the user
+
+    [root@demo ~]# grep 'Command line' /var/log/messages
+    Aug 17 15:01:47 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-372.16.1.el8_6.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+    Aug 17 15:32:14 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-348.20.1.el8_5.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+    Aug 17 15:49:50 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-372.16.1.el8_6.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+    Aug 17 16:36:30 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-372.19.1.el8_6.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+    Aug 17 17:23:39 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-372.19.1.el8_6.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+    Aug 17 17:30:22 demo kernel: Command line: BOOT_IMAGE=(hd0,msdos1)/vmlinuz-4.18.0-372.19.1.el8_6.x86_64 root=/dev/mapper/VG_01-root ro crashkernel=auto resume=/dev/mapper/VG_01-swap rd.lvm.lv=VG_01/root rd.lvm.lv=VG_01/swap rhgb quiet
+   
+    [root@demo ~]# last | grep reboot
+    reboot   system boot  4.18.0-372.19.1. Wed Aug 17 17:30   still running
+    reboot   system boot  4.18.0-372.19.1. Wed Aug 17 17:23 - 17:30  (00:06)
+    reboot   system boot  4.18.0-372.19.1. Wed Aug 17 16:36 - 17:23  (00:46)
+    reboot   system boot  4.18.0-372.16.1. Wed Aug 17 15:49 - 16:36  (00:46)
+    reboot   system boot  4.18.0-348.20.1. Wed Aug 17 15:32 - 15:49  (00:17)
+    reboot   system boot  4.18.0-372.16.1. Wed Aug 17 15:01 - 15:31  (00:30)
 
 ### Basic vmcore analysis (PS. If it's in another system, make sure you have the same kernel version of the generated vmcore)
 
